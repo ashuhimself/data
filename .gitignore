@@ -1,1 +1,36 @@
-.github/*
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Python environment files
+venv/
+.env
+.env.local
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Logs
+*.log
+
+# GitHub Actions specific files
+.github/workflows/*.log  # Ignore logs generated during workflow runs
+.github/workflows/*.yml   # If you want to ignore specific YAML files
+
+# IDE and editor files
+*.swp
+*.swo
+*.DS_Store
+.vscode/
+.idea/
+
+# Other sensitive files
+*.pem
+*.key
+*.crt
+
+# Compiled files or build artifacts
+dist/
+build/
+*.egg-info/
