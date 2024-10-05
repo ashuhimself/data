@@ -1,0 +1,8 @@
+apache-airflow==2.5.0
+apache-airflow-providers-python
+apache-airflow-providers-postgres
+apache-airflow-providers-amazon
+apache-airflow-providers-bash
+apache-airflow-providers-http
+boto3
+pendulum
