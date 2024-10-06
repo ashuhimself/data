@@ -23,7 +23,7 @@ dag = DAG(
 def task_function(task_name):
     print(f"Executing {task_name}")
 
-@task_group(group_id='task_group_1')
+@task_group(group_id='task_group_1', dag=dag)  # Ensure DAG is passed here
 def my_task_group():
     task_1 = PythonOperator(
         task_id='task_1',
