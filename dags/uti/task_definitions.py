@@ -37,7 +37,7 @@ def create_tasks(dynamic_task_group):
     )
 
     s3_upload_task = create_s3_upload_task(
-        ,
+        
         task_id='s3_upload_task',
         aws_conn_id='my_s3',
         s3_bucket='airflowashutosh',
