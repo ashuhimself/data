@@ -1,0 +1,3 @@
+global:
+  file_name_format : Test_{{ run_date }}.csv
+  s3_conn_d : test_s3

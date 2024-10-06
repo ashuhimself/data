@@ -4,5 +4,5 @@ apache-airflow-providers-postgres
 apache-airflow-providers-amazon
 apache-airflow-providers-bash
 apache-airflow-providers-http
-boto3
+apache-airflow-providers-amazon
 pendulum
