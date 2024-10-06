@@ -1,32 +1,12 @@
-
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.utils.task_group import TaskGroup
 from datetime import datetime
+from module.task_definitions import create_tasks
 
-# Define a simple function that will be executed
-def print_hello():
-    print("Hello, World!")
+dag = DAG(dag_id='dynamic_task_group_dag', 
+          start_date=datetime(2024, 10, 7), 
+          schedule_interval='@daily')
 
-# Define default arguments for the DAG
-default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2024, 10, 5),  # Specify the start date for the DAG
-    'retries': 1,  # Number of retries for failed tasks
-}
+dynamic_task_group = TaskGroup(group_id='dynamic_task_group', dag=dag)
 
-# Create the DAG object
-with DAG(
-    dag_id='hello_world_dag',  # Unique identifier for the DAG
-    default_args=default_args,
-    schedule_interval='@daily',  # Schedule the DAG to run daily
-    catchup=False,  # Do not run past scheduled runs
-) as dag:
-
-    # Define a task using PythonOperator
-    hello_task = PythonOperator(
-        task_id='print_hello',  # Unique identifier for the task
-        python_callable=print_hello,  # Function to be called
-    )
-
-    # Define the task dependencies
-    hello_task  # In this case, there's only one task
+create_tasks(dag, dynamic_task_group)
