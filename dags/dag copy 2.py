@@ -14,7 +14,7 @@ default_args = {
 }
 
 dag = DAG(
-    'task_group_example7777',
+    'task_group_example8888',
     default_args=default_args,
     description='A DAG with a task group containing 5 tasks',
     schedule_interval=timedelta(days=1),
