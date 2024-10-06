@@ -1,15 +1,36 @@
-
 from airflow import DAG
+from airflow.decorators import task, task_group
 from datetime import datetime
-from uti.task_definitions import create_tasks 
 
+# Define the DAG
 dag = DAG(
-    dag_id='dynamic_task_group_dag', 
-    start_date=datetime(2024, 10, 7), 
+    dag_id='example_task_group',
     schedule_interval='@daily',
+    start_date=datetime(2023, 1, 1),
     catchup=False
 )
 
-task_group = create_tasks()
+# Create a task group using the @task_group decorator
+@task_group
+def my_task_group():
+    @task
+    def task_1():
+        print("Task 1 executed")
 
-task_group.dag = dag
+    @task
+    def task_2():
+        print("Task 2 executed")
+
+    # Define the order of task execution
+    task_1() >> task_2()
+
+# Create the task group in the DAG
+my_task_group_instance = my_task_group()
+
+# Define a downstream task if needed
+@task
+def final_task():
+    print("Final task executed")
+
+# Set task dependencies
+my_task_group_instance >> final_task()
