@@ -41,43 +41,46 @@ task_1 = PythonOperator(
     task_id='task_1',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 1'},
-    task_group=tg1
+    dag=dag
 )
 
 task_2 = PythonOperator(
     task_id='task_2',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 2'},
-    task_group=tg1
+    dag=dag
 )
 
 task_3 = PythonOperator(
     task_id='task_3',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 3'},
-    task_group=tg1
+    dag=dag
 )
 
 task_4 = PythonOperator(
     task_id='task_4',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 4'},
-    task_group=tg1
+    dag=dag
 )
 
 task_5 = PythonOperator(
     task_id='task_5',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 5'},
-    task_group=tg1
+    dag=dag
 )
 
+# Add tasks to the TaskGroup
+tg1.add(task_1)
+tg1.add(task_2)
+tg1.add(task_3)
+tg1.add(task_4)
+tg1.add(task_5)
+
 # Define the task dependencies within the group
-task_1.set_downstream([task_2, task_3])
-task_2.set_downstream(task_4)
-task_3.set_downstream(task_4)
-task_4.set_downstream(task_5)
+task_1 >> [task_2, task_3] >> task_4 >> task_5
 
 # Set up the overall DAG structure
-start.set_downstream(tg1)
-tg1.set_downstream(end)
+start >> tg1 >> end
