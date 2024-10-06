@@ -23,39 +23,43 @@ dag = DAG(
 def task_function(task_name):
     print(f"Executing {task_name}")
 
-@task_group(group_id='task_group_1', dag=dag)  # Ensure DAG is passed here
+@task_group(group_id='task_group_1', dag=dag)
 def my_task_group():
     task_1 = PythonOperator(
         task_id='task_1',
         python_callable=task_function,
         op_kwargs={'task_name': 'Task 1'},
+        dag=dag
     )
 
     task_2 = PythonOperator(
         task_id='task_2',
         python_callable=task_function,
         op_kwargs={'task_name': 'Task 2'},
+        dag=dag
     )
 
     task_3 = PythonOperator(
         task_id='task_3',
         python_callable=task_function,
         op_kwargs={'task_name': 'Task 3'},
+        dag=dag
     )
 
     task_4 = PythonOperator(
         task_id='task_4',
         python_callable=task_function,
         op_kwargs={'task_name': 'Task 4'},
+        dag=dag
     )
 
     task_5 = PythonOperator(
         task_id='task_5',
         python_callable=task_function,
         op_kwargs={'task_name': 'Task 5'},
+        dag=dag
     )
 
-    # Define dependencies within the task group
     task_1 >> [task_2, task_3]
     task_2 >> task_4
     task_3 >> task_4
@@ -73,5 +77,4 @@ end = PythonOperator(
     dag=dag
 )
 
-# Set up the overall DAG structure
 start >> my_task_group() >> end
