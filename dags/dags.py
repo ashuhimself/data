@@ -9,4 +9,4 @@ dag = DAG(dag_id='dynamic_task_group_dag',
 
 dynamic_task_group = TaskGroup(group_id='dynamic_task_group', dag=dag)
 
-create_tasks(dag, dynamic_task_group)
+create_tasks(dynamic_task_group)
