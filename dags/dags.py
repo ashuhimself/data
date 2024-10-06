@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.utils.task_group import TaskGroup
 from datetime import datetime
-from module import create_tasks
+from uti.task_definitions import create_tasks
 
 dag = DAG(dag_id='dynamic_task_group_dag', 
           start_date=datetime(2024, 10, 7), 
