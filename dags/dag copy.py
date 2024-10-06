@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.utils.task_group import task_group
+from airflow.decorators import task_group
 from datetime import datetime, timedelta
 
 default_args = {
