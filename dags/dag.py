@@ -75,7 +75,7 @@ task_5 = PythonOperator(
     task_id='task_5',
     python_callable=task_function,
     op_kwargs={'task_name': 'Task 5'},
-    task_group=tg1,
+    task_group=None,
     dag=dag
 )
 
