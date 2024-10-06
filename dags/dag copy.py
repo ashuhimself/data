@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.utils.task_group import TaskGroup
+from airflow.utils.task_group import task_group
 from datetime import datetime, timedelta
 
 default_args = {
@@ -14,7 +14,7 @@ default_args = {
 }
 
 dag = DAG(
-    'task_group_example_2',
+    'task_group_example',
     default_args=default_args,
     description='A DAG with a task group containing 5 tasks',
     schedule_interval=timedelta(days=1),
@@ -22,6 +22,44 @@ dag = DAG(
 
 def task_function(task_name):
     print(f"Executing {task_name}")
+
+@task_group(group_id='task_group_1')
+def my_task_group():
+    task_1 = PythonOperator(
+        task_id='task_1',
+        python_callable=task_function,
+        op_kwargs={'task_name': 'Task 1'},
+    )
+
+    task_2 = PythonOperator(
+        task_id='task_2',
+        python_callable=task_function,
+        op_kwargs={'task_name': 'Task 2'},
+    )
+
+    task_3 = PythonOperator(
+        task_id='task_3',
+        python_callable=task_function,
+        op_kwargs={'task_name': 'Task 3'},
+    )
+
+    task_4 = PythonOperator(
+        task_id='task_4',
+        python_callable=task_function,
+        op_kwargs={'task_name': 'Task 4'},
+    )
+
+    task_5 = PythonOperator(
+        task_id='task_5',
+        python_callable=task_function,
+        op_kwargs={'task_name': 'Task 5'},
+    )
+
+    # Define dependencies within the task group
+    task_1 >> [task_2, task_3]
+    task_2 >> task_4
+    task_3 >> task_4
+    task_4 >> task_5
 
 start = PythonOperator(
     task_id='start',
@@ -35,55 +73,5 @@ end = PythonOperator(
     dag=dag
 )
 
-# Create TaskGroup
-tg1 = TaskGroup(group_id='task_group_1', dag=dag)
-
-# Create tasks within the TaskGroup
-task_1 = PythonOperator(
-    task_id='task_1',
-    python_callable=task_function,
-    op_kwargs={'task_name': 'Task 1'},
-    task_group=None,
-    dag=dag
-)
-
-task_2 = PythonOperator(
-    task_id='task_2',
-    python_callable=task_function,
-    op_kwargs={'task_name': 'Task 2'},
-    task_group=tg1,
-    dag=dag
-)
-
-task_3 = PythonOperator(
-    task_id='task_3',
-    python_callable=task_function,
-    op_kwargs={'task_name': 'Task 3'},
-    task_group=tg1,
-    dag=dag
-)
-
-task_4 = PythonOperator(
-    task_id='task_4',
-    python_callable=task_function,
-    op_kwargs={'task_name': 'Task 4'},
-    task_group=tg1,
-    dag=dag
-)
-
-task_5 = PythonOperator(
-    task_id='task_5',
-    python_callable=task_function,
-    op_kwargs={'task_name': 'Task 5'},
-    task_group=None,
-    dag=dag
-)
-
-# Define the task dependencies within the group
-task_1 >> [task_2, task_3]
-task_2 >> task_4
-task_3 >> task_4
-task_4 >> task_5
-
 # Set up the overall DAG structure
-start >> tg1 >> end
+start >> my_task_group() >> end
