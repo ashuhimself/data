@@ -1,3 +1,6 @@
 global:
   file_name_format : Test_{{ run_date }}.csv
   s3_conn_d : aws_s3
+
+run_date:
+  file_name_1
