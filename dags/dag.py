@@ -79,11 +79,10 @@ task_5 = PythonOperator(
     dag=dag
 )
 
-# Define the task dependencies within the group
 task_1 >> [task_2, task_3]
 task_2 >> task_4
 task_3 >> task_4
 task_4 >> task_5
 
-# Set up the overall DAG structure
 start >> tg1 >> end
+
